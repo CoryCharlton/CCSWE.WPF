@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCSWE.WPF", "WPF\CCSWE.WPF.csproj", "{B45CAF87-A654-435C-B054-8F579059D2A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97E44074-3B96-4D33-A0B0-0418D230446A}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE.md = ..\LICENSE.md
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B45CAF87-A654-435C-B054-8F579059D2A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B45CAF87-A654-435C-B054-8F579059D2A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B45CAF87-A654-435C-B054-8F579059D2A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B45CAF87-A654-435C-B054-8F579059D2A5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
