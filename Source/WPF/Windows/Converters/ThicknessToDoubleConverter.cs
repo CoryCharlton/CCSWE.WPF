@@ -5,6 +5,7 @@ using System.Windows.Data;
 
 namespace CCSWE.Windows.Converters
 {
+    //TODO: Add XmlDoc
     public class ThicknessToDoubleConverter: IValueConverter
     {
         #region Public Properties
@@ -37,7 +38,10 @@ namespace CCSWE.Windows.Converters
                         return thickness.Top;
                     }
                     default:
+                    {
+                        // TODO: This doesn't feel like the correct exception
                         throw new ArgumentOutOfRangeException();
+                    }
                 }
             }
 
