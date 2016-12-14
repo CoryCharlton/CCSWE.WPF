@@ -16,6 +16,9 @@ namespace CCSWE
         /// <param name="fadeDuration">The duration in milliseconds to run the animations for.</param>
         public static void AnimateSourceChange(this Image image, ImageSource source, double fadeDuration)
         {
+            Ensure.IsNotNull(nameof(image), image);
+            Ensure.IsNotNull(nameof(source), source);
+
             AnimateSourceChange(image, source, TimeSpan.FromMilliseconds(fadeDuration));
         }
 
@@ -27,6 +30,9 @@ namespace CCSWE
         /// <param name="fadeDuration">The duration to run the animations for.</param>
         public static void AnimateSourceChange(this Image image, ImageSource source, TimeSpan fadeDuration)
         {
+            Ensure.IsNotNull(nameof(image), image);
+            Ensure.IsNotNull(nameof(source), source);
+
             AnimateSourceChange(image, source, fadeDuration, fadeDuration);
         }
 
@@ -39,6 +45,9 @@ namespace CCSWE
         /// <param name="fadeInDuration">The duration in milliseconds to run the fade out animation for.</param>
         public static void AnimateSourceChange(this Image image, ImageSource source, double fadeOutDuration, double fadeInDuration)
         {
+            Ensure.IsNotNull(nameof(image), image);
+            Ensure.IsNotNull(nameof(source), source);
+
             AnimateSourceChange(image, source, TimeSpan.FromMilliseconds(fadeOutDuration), TimeSpan.FromMilliseconds(fadeInDuration));
         }
 
@@ -51,6 +60,9 @@ namespace CCSWE
         /// <param name="fadeInDuration">The duration to run the fade out animation for.</param>
         public static void AnimateSourceChange(this Image image, ImageSource source, TimeSpan fadeOutDuration, TimeSpan fadeInDuration)
         {
+            Ensure.IsNotNull(nameof(image), image);
+            Ensure.IsNotNull(nameof(source), source);
+
             var fadeInAnimation = new DoubleAnimation(1d, fadeInDuration);
             
             if (image.Source != null && fadeOutDuration > TimeSpan.Zero)

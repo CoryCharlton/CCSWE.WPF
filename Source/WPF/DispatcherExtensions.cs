@@ -10,6 +10,8 @@ namespace CCSWE
         /// <param name="dispatcher">The <see cref="Dispatcher"/> to invoke the empty delegate on</param>
         public static void DoEvents(this Dispatcher dispatcher)
         {
+            Ensure.IsNotNull(nameof(dispatcher), dispatcher);
+
             dispatcher.Invoke(delegate {}, DispatcherPriority.Background);
         }
     }

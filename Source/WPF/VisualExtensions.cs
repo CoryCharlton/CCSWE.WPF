@@ -61,10 +61,7 @@ namespace CCSWE
 
             T foundElement = null;
 
-            if (element is FrameworkElement)
-            {
-                (element as FrameworkElement).ApplyTemplate();
-            }
+            (element as FrameworkElement)?.ApplyTemplate();
 
             for (var i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
             {

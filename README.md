@@ -2,7 +2,7 @@
 
 # CCSWE.WPF
 
-Just a bunch of C# .NET classes and extension methods I find useful.
+A collection of extension methods, custom controls, themes, and value converters for WPF development.
 
 If you find this code useful please consider [donating](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ECGSEZ36LV6QU) to support my efforts.
 
