@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace CCSWE.Windows.Converters
 {
+    //TODO: Add XmlDoc
+    //TODO: Clean this up...
     public class IdealForegroundConverter : IValueConverter, IMultiValueConverter
     {
         private static IdealForegroundConverter _instance;
@@ -24,11 +21,8 @@ namespace CCSWE.Windows.Converters
         {
         }
 
-        public static IdealForegroundConverter Instance
-        {
-            get { return _instance ?? (_instance = new IdealForegroundConverter()); }
-        }
-
+        // TODO: Convert this to a proper Singleton implementation
+        public static IdealForegroundConverter Instance => _instance ?? (_instance = new IdealForegroundConverter());
 
         #region Private Methods
         // From: http://www.codeproject.com/Articles/16565/Determining-Ideal-Text-Color-Based-on-Specified-Ba
