@@ -50,10 +50,7 @@ namespace CCSWE.Windows.Controls
         #endregion
 
         #region Public Properties
-        private Size ChildSlotSize
-        {
-            get { return new Size(ItemWidth, ItemHeight); }
-        }
+        private Size ChildSlotSize => new Size(ItemWidth, ItemHeight);
 
         [TypeConverter(typeof(LengthConverter))]
         public double ItemHeight
@@ -83,12 +80,14 @@ namespace CCSWE.Windows.Controls
             {
                 var childGeneratorPos = new GeneratorPosition(i, 0);
                 var itemIndex = _generator.IndexFromGeneratorPosition(childGeneratorPos);
+
                 if (itemIndex < minDesiredGenerated || itemIndex > maxDesiredGenerated)
                 {
                     if (itemIndex >= 0)
                     {
                         _generator.Remove(childGeneratorPos, 1);
                     }
+
                     RemoveInternalChildRange(i, 1);
                 }
             }
@@ -125,19 +124,10 @@ namespace CCSWE.Windows.Controls
             var section = GetFirstVisibleSection();
 
             //TODO: Quick hack. Need to dig into why this is null
-            if (_abstractPanel == null)
-            {
-                return 0;
-            }
 
-            var item = _abstractPanel.FirstOrDefault(x => x.Section == section);
+            var item = _abstractPanel?.FirstOrDefault(x => x.Section == section);
 
-            if (item != null)
-            {
-                return item._index;
-            }
-
-            return 0;
+            return item?.Index ?? 0;
         }
 
         private int GetFirstVisibleSection()
@@ -175,7 +165,7 @@ namespace CCSWE.Windows.Controls
             if (abstractItem.Section > 0)
             {
                 var ret = _abstractPanel.Where(x => x.Section == abstractItem.Section - 1).OrderBy(x => Math.Abs(x.SectionIndex - abstractItem.SectionIndex)).First();
-                return ret._index;
+                return ret.Index;
             }
             else
             {
@@ -189,7 +179,7 @@ namespace CCSWE.Windows.Controls
             if (abstractItem.Section < _abstractPanel.SectionCount - 1)
             {
                 var ret = _abstractPanel.Where(x => x.Section == abstractItem.Section + 1).OrderBy(x => Math.Abs(x.SectionIndex - abstractItem.SectionIndex)).First();
-                return ret._index;
+                return ret.Index;
             }
             else
             {
@@ -349,7 +339,7 @@ namespace CCSWE.Windows.Controls
                         }
                         else
                         {
-                            base.InsertInternalChild(childIndex, child);
+                            InsertInternalChild(childIndex, child);
                         }
 
                         _generator.PrepareItemContainer(child);
@@ -370,6 +360,7 @@ namespace CCSWE.Windows.Controls
                     }
 
                     _childSize = child.DesiredSize;
+
                     var childRect = new Rect(new Point(currentX, currentY), _childSize);
 
                     if (isHorizontal)
@@ -504,35 +495,27 @@ namespace CCSWE.Windows.Controls
         #endregion
 
         #region Public 
-
-
-
-
-
-
-
-
-
-
-
-
         private void NavigateDown()
         {
             var gen = _generator.GetItemContainerGeneratorForPanel(this);
             var selected = (UIElement)Keyboard.FocusedElement;
             var itemIndex = gen.IndexFromContainer(selected);
             var depth = 0;
+
             while (itemIndex == -1)
             {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
-            DependencyObject next = null;
+
+            DependencyObject next;
+
             if (Orientation == Orientation.Horizontal)
             {
                 var nextIndex = GetNextSectionClosestIndex(itemIndex);
                 next = gen.ContainerFromIndex(nextIndex);
+
                 while (next == null)
                 {
                     SetVerticalOffset(VerticalOffset + 1);
@@ -542,9 +525,13 @@ namespace CCSWE.Windows.Controls
             }
             else
             {
-                if (itemIndex == _abstractPanel._itemCount - 1)
+                if (itemIndex == _abstractPanel.ItemCount - 1)
+                {
                     return;
+                }
+
                 next = gen.ContainerFromIndex(itemIndex + 1);
+
                 while (next == null)
                 {
                     SetHorizontalOffset(HorizontalOffset + 1);
@@ -552,12 +539,14 @@ namespace CCSWE.Windows.Controls
                     next = gen.ContainerFromIndex(itemIndex + 1);
                 }
             }
+
             while (depth != 0)
             {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
-            (next as UIElement).Focus();
+
+            (next as UIElement)?.Focus();
         }
 
         private void NavigateLeft()
@@ -567,17 +556,21 @@ namespace CCSWE.Windows.Controls
             var selected = (UIElement)Keyboard.FocusedElement;
             var itemIndex = gen.IndexFromContainer(selected);
             var depth = 0;
+
             while (itemIndex == -1)
             {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
-            DependencyObject next = null;
+
+            DependencyObject next;
+
             if (Orientation == Orientation.Vertical)
             {
                 var nextIndex = GetLastSectionClosestIndex(itemIndex);
                 next = gen.ContainerFromIndex(nextIndex);
+
                 while (next == null)
                 {
                     SetHorizontalOffset(HorizontalOffset - 1);
@@ -588,8 +581,12 @@ namespace CCSWE.Windows.Controls
             else
             {
                 if (itemIndex == 0)
+                {
                     return;
+                }
+
                 next = gen.ContainerFromIndex(itemIndex - 1);
+
                 while (next == null)
                 {
                     SetVerticalOffset(VerticalOffset - 1);
@@ -597,12 +594,14 @@ namespace CCSWE.Windows.Controls
                     next = gen.ContainerFromIndex(itemIndex - 1);
                 }
             }
+
             while (depth != 0)
             {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
-            (next as UIElement).Focus();
+
+            (next as UIElement)?.Focus();
         }
 
         private void NavigateRight()
@@ -611,13 +610,16 @@ namespace CCSWE.Windows.Controls
             var selected = (UIElement)Keyboard.FocusedElement;
             var itemIndex = gen.IndexFromContainer(selected);
             var depth = 0;
+
             while (itemIndex == -1)
             {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
-            DependencyObject next = null;
+
+            DependencyObject next;
+
             if (Orientation == Orientation.Vertical)
             {
                 var nextIndex = GetNextSectionClosestIndex(itemIndex);
@@ -631,9 +633,13 @@ namespace CCSWE.Windows.Controls
             }
             else
             {
-                if (itemIndex == _abstractPanel._itemCount - 1)
+                if (itemIndex == _abstractPanel.ItemCount - 1)
+                {
                     return;
+                }
+
                 next = gen.ContainerFromIndex(itemIndex + 1);
+
                 while (next == null)
                 {
                     SetVerticalOffset(VerticalOffset + 1);
@@ -641,12 +647,14 @@ namespace CCSWE.Windows.Controls
                     next = gen.ContainerFromIndex(itemIndex + 1);
                 }
             }
+
             while (depth != 0)
             {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
-            (next as UIElement).Focus();
+
+            (next as UIElement)?.Focus();
         }
 
         private void NavigateUp()
@@ -655,13 +663,16 @@ namespace CCSWE.Windows.Controls
             var selected = (UIElement)Keyboard.FocusedElement;
             var itemIndex = gen.IndexFromContainer(selected);
             var depth = 0;
+
             while (itemIndex == -1)
             {
                 selected = (UIElement)VisualTreeHelper.GetParent(selected);
                 itemIndex = gen.IndexFromContainer(selected);
                 depth++;
             }
-            DependencyObject next = null;
+
+            DependencyObject next;
+
             if (Orientation == Orientation.Horizontal)
             {
                 var nextIndex = GetLastSectionClosestIndex(itemIndex);
@@ -685,23 +696,15 @@ namespace CCSWE.Windows.Controls
                     next = gen.ContainerFromIndex(itemIndex - 1);
                 }
             }
+
             while (depth != 0)
             {
                 next = VisualTreeHelper.GetChild(next, 0);
                 depth--;
             }
-            (next as UIElement).Focus();
+
+            (next as UIElement)?.Focus();
         }
-
-
-        #endregion
-
-        #region Override
-
-
-
-
-
 
 
         #endregion
@@ -712,37 +715,19 @@ namespace CCSWE.Windows.Controls
 
         public bool CanVerticallyScroll { get; set; }
 
-        public double ExtentHeight
-        {
-            get { return _extent.Height; }
-        }
+        public double ExtentHeight => _extent.Height;
 
-        public double ExtentWidth
-        {
-            get { return _extent.Width; }
-        }
+        public double ExtentWidth => _extent.Width;
 
-        public double HorizontalOffset
-        {
-            get { return _offset.X; }
-        }
+        public double HorizontalOffset => _offset.X;
 
         public ScrollViewer ScrollOwner { get; set; }
 
-        public double VerticalOffset
-        {
-            get { return _offset.Y; }
-        }
+        public double VerticalOffset => _offset.Y;
 
-        public double ViewportHeight
-        {
-            get { return _viewport.Height; }
-        }
+        public double ViewportHeight => _viewport.Height;
 
-        public double ViewportWidth
-        {
-            get { return _viewport.Width; }
-        }
+        public double ViewportWidth => _viewport.Width;
         #endregion
 
         #region Public Methods
@@ -780,7 +765,7 @@ namespace CCSWE.Windows.Controls
 
         public Rect MakeVisible(Visual visual, Rect rectangle)
         {
-            var gen = (ItemContainerGenerator)_generator.GetItemContainerGeneratorForPanel(this);
+            var gen = _generator.GetItemContainerGeneratorForPanel(this);
             var element = (UIElement)visual;
             var itemIndex = gen.IndexFromContainer(element);
             while (itemIndex == -1)
@@ -797,7 +782,6 @@ namespace CCSWE.Windows.Controls
                 return elementRect;
             }
 
-            var section = _abstractPanel[itemIndex].Section;
             if (Orientation == Orientation.Horizontal)
             {
                 var viewportHeight = _pixelMeasuredViewport.Height;
@@ -814,7 +798,9 @@ namespace CCSWE.Windows.Controls
                 else if (elementRect.Left < 0)
                     _offset.X -= 1;
             }
+
             InvalidateMeasure();
+
             return elementRect;
         }
 
@@ -924,12 +910,12 @@ namespace CCSWE.Windows.Controls
             public ItemAbstraction(WrapPanelAbstraction panel, int index)
             {
                 _panel = panel;
-                _index = index;
+                Index = index;
             }
 
-            WrapPanelAbstraction _panel;
+            private readonly WrapPanelAbstraction _panel;
 
-            public readonly int _index;
+            public int Index { get; }
 
             int _sectionIndex = -1;
             public int SectionIndex
@@ -938,7 +924,7 @@ namespace CCSWE.Windows.Controls
                 {
                     if (_sectionIndex == -1)
                     {
-                        return _index % _panel._averageItemsPerSection - 1;
+                        return Index % _panel.AverageItemsPerSection - 1;
                     }
                     return _sectionIndex;
                 }
@@ -956,7 +942,7 @@ namespace CCSWE.Windows.Controls
                 {
                     if (_section == -1)
                     {
-                        return _index / _panel._averageItemsPerSection;
+                        return Index / _panel.AverageItemsPerSection;
                     }
                     return _section;
                 }
@@ -980,16 +966,16 @@ namespace CCSWE.Windows.Controls
                 }
 
                 Items = new ReadOnlyCollection<ItemAbstraction>(items);
-                _averageItemsPerSection = itemCount;
-                _itemCount = itemCount;
+                AverageItemsPerSection = itemCount;
+                ItemCount = itemCount;
             }
 
-            public readonly int _itemCount;
-            public int _averageItemsPerSection;
+            public int ItemCount { get; }
+            public int AverageItemsPerSection { get; private set; }
             private int _currentSetSection = -1;
             private int _currentSetItemIndex = -1;
-            private int _itemsInCurrentSecction = 0;
-            private object _syncRoot = new object();
+            private int _itemsInCurrentSecction;
+            private readonly object _syncRoot = new object();
 
             public int SectionCount
             {
@@ -999,13 +985,13 @@ namespace CCSWE.Windows.Controls
                     if (_currentSetItemIndex + 1 < Items.Count)
                     {
                         var itemsLeft = Items.Count - _currentSetItemIndex;
-                        ret += itemsLeft / _averageItemsPerSection + 1;
+                        ret += itemsLeft / AverageItemsPerSection + 1;
                     }
                     return ret;
                 }
             }
 
-            private ReadOnlyCollection<ItemAbstraction> Items { get; set; }
+            private ReadOnlyCollection<ItemAbstraction> Items { get; }
 
             public void SetItemSection(int index, int section)
             {
@@ -1020,7 +1006,7 @@ namespace CCSWE.Windows.Controls
                             _currentSetSection = section;
                             if (section > 0)
                             {
-                                _averageItemsPerSection = (index) / (section);
+                                AverageItemsPerSection = (index) / (section);
                             }
                             _itemsInCurrentSecction = 1;
                         }
@@ -1031,27 +1017,15 @@ namespace CCSWE.Windows.Controls
                 }
             }
 
-            public ItemAbstraction this[int index]
-            {
-                get { return Items[index]; }
-            }
+            public ItemAbstraction this[int index] => Items[index];
 
             #region IEnumerable<ItemAbstraction> Members
 
-            public IEnumerator<ItemAbstraction> GetEnumerator()
-            {
-                return Items.GetEnumerator();
-            }
-
+            public IEnumerator<ItemAbstraction> GetEnumerator() => Items.GetEnumerator();
             #endregion
 
             #region IEnumerable Members
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
             #endregion
         }
 
