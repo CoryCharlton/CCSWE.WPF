@@ -25,11 +25,7 @@ namespace CCSWE.Windows.Input
         #region Protected Methods
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var propertyChangedEventHandler = PropertyChanged;
-            if (propertyChangedEventHandler != null)
-            {
-                propertyChangedEventHandler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CCSWE.Threading.Tasks;
@@ -22,6 +19,8 @@ namespace CCSWE.Windows.Input
 
         public AsyncCommand(Func<Task> execute, Func<bool> canExecute)
         {
+            Ensure.IsNotNull(nameof(execute), execute);
+
             _canExecute = canExecute;
             _execute = execute;
         }
@@ -30,7 +29,6 @@ namespace CCSWE.Windows.Input
         #region Private Fields
         //TODO: AsyncCommand - MVVM Light implements a WeakAction and WeakFunc. Need to look into wether or not something like that is necessary
         private readonly Func<bool> _canExecute;
-        //private readonly List<string> _dependentPropertyNames;
         private readonly Func<Task> _execute;
         private NotifyTaskCompletion _execution;
         #endregion
@@ -42,21 +40,10 @@ namespace CCSWE.Windows.Input
             private set
             {
                 _execution = value;
+
                 RaisePropertyChanged();
             }
         }
-        #endregion
-
-        #region Private Methods
-        /*
-        private void OnTargetPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (_dependentPropertyNames.Contains(e.PropertyName))
-            {
-                RaiseCanExecuteChanged();
-            }
-        }
-        */
         #endregion
 
         #region Public Methods
@@ -69,12 +56,7 @@ namespace CCSWE.Windows.Input
             }
 
             // There is no function to check so I suppose we can execute :)
-            if (_canExecute == null)
-            {
-                return true;
-            }
-
-            return _canExecute();
+            return _canExecute == null || _canExecute();
         }
 
         public override async Task ExecuteAsync(object parameter)
