@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/jdqirp46kppcw2jq/branch/master?svg=true)](https://ci.appveyor.com/project/CoryCharlton/ccswe-libraries/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/elfktumauqu1179d?svg=true)](https://ci.appveyor.com/project/CoryCharlton/ccswe-wpf)
 
 # CCSWE.WPF
 
