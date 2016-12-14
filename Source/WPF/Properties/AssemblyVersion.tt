@@ -7,7 +7,7 @@
 using System.Reflection;
 
 [assembly: AssemblyVersion("1.1.<#= this.BuildRevisionNumber #>")]
-[assembly: AssemblyFileVersion("1.01.<#= this.BuildRevisionNumber #>")]
+[assembly: AssemblyFileVersion("1.1.<#= this.BuildRevisionNumber #>")]
 <#+
-    string BuildRevisionNumber = (DateTime.UtcNow - new DateTime(2016,1,1)).TotalDays.ToString("##.0000");
+    string BuildRevisionNumber = ((DateTime.UtcNow - new DateTime(2016, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalDays + .1).ToString("F4");
 #>
